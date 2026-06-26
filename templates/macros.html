@@ -11,7 +11,7 @@
 </a>
 {% endmacro top_link %}
 
-{% macro year_nav(pages) %}
+{% macro year_nav(pages, base_url="/posts/") %}
 {% if pages | length > 0 %}
 {% set_global current_year = "" %}
 <ul>
@@ -20,7 +20,7 @@
   {% if page_year != current_year %}
   {% set_global current_year = page_year %}
   <li>
-    <a href="/posts/#year-{{ page_year }}">{{ page_year }}/</a>
+    <a href="{{ base_url }}#year-{{ page_year }}">{{ page_year }}/</a>
   </li>
   {% endif %}
   {% endfor %}
@@ -68,7 +68,7 @@
 {% endif %}
 {% endmacro toc_outline %}
 
-{% macro sidebar_for_topnav(items, current_path, archive_pages) %}
+{% macro sidebar_for_topnav(items, current_path, archive_pages, archive_base_url="/posts/") %}
 {% for item in items | default(value=[]) %}
 {% set item_href = item.href %}
 {% set secondary_nav = item.secondary_nav | default(value=[]) %}
@@ -84,11 +84,11 @@
   {{ self::tree_node(node=node, current_path=current_path, depth=0) }}
   {% endfor %}
 </ul>
-{% if item_href == "/posts/" and archive_pages | length > 0 %}
-{{ self::year_nav(pages=archive_pages) }}
+{% if item_href == archive_base_url and archive_pages | length > 0 %}
+{{ self::year_nav(pages=archive_pages, base_url=archive_base_url) }}
 {% endif %}
-{% elif item_href == "/posts/" and archive_pages | length > 0 %}
-{{ self::year_nav(pages=archive_pages) }}
+{% elif item_href == archive_base_url and archive_pages | length > 0 %}
+{{ self::year_nav(pages=archive_pages, base_url=archive_base_url) }}
 {% endif %}
 {% endif %}
 {% endfor %}

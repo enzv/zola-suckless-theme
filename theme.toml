@@ -4,6 +4,17 @@ license = "MIT"
 homepage = "https://github.com/enzv/zola-suckless-theme"
 min_version = "0.22.0"
 tags = ["blog", "minimal", "theme", "plain"]
+
+[extra]
+brand_name = "Example Site"
+brand_href = "/"
+brand_logo_src = ""
+brand_logo_alt = ""
+archive_section_path = "posts/_index.md"
+archive_base_url = "/posts/"
+utility_nav = []
+primary_nav = []
+
 [author]
 name = "Enzo Venturi"
 homepage = "https://enzoventuri.com"

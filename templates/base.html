@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  {% set brand_name = config.extra.brand_name | default(value="") %}
+  {% set brand_name = config.extra.brand_name | default(value=config.title) %}
   <title>{% block title %}{{ brand_name }}{% endblock title %}</title>
-  <meta name="description" content="{{ config.description }}">
+  <meta name="description" content="{{ config.description | default(value="") }}">
   <link rel="stylesheet" href="/colors.css">
   <link rel="stylesheet" href="/style.css">
   {% if config.generate_feeds %}
@@ -39,6 +39,7 @@
   <hr class="hidden">
 
   <nav id="menu" aria-label="site">
+    {% set archive_base_url = config.extra.archive_base_url | default(value="/posts/") %}
     {% block topnav %}
     <span class="left">
       {% for item in primary_nav %}

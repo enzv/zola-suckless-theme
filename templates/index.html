@@ -6,6 +6,7 @@
 {% block topnav %}
 {% set primary_nav = config.extra.primary_nav | default(value=[]) %}
 {% set utility_nav = config.extra.utility_nav | default(value=[]) %}
+{% set archive_base_url = config.extra.archive_base_url | default(value="/posts/") %}
 {% set archive_pages = [] %}
 <span class="left">
   {% for item in primary_nav %}
@@ -22,7 +23,7 @@
 {% endblock topnav %}
 
 {% block nav %}
-{{ nav::sidebar_for_topnav(items=primary_nav, current_path=current_path | default(value=""), archive_pages=archive_pages) }}
+{{ nav::sidebar_for_topnav(items=primary_nav, current_path=current_path | default(value=""), archive_pages=archive_pages, archive_base_url=archive_base_url) }}
 {% endblock nav %}
 
 {% block content %}
