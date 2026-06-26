@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% import "macros.html" as nav %}
+
+{% block title %}{{ section.title }}{% endblock title %}
+
+{% block topnav %}
+{% set primary_nav = config.extra.primary_nav | default(value=[]) %}
+{% set utility_nav = config.extra.utility_nav | default(value=[]) %}
+{% set posts_section = get_section(path="posts/_index.md") %}
+{% set archive_pages = posts_section.pages %}
+<span class="left">
+  {% for item in primary_nav %}
+  {{ nav::top_link(item=item, current_path=current_path | default(value="")) }}
+  {% endfor %}
+</span>
+{% if utility_nav | length > 0 %}
+<span class="right">
+  {% for item in utility_nav %}
+  <a href="{{ item.href }}">{{ item.text }}</a>
+  {% endfor %}
+</span>
+{% endif %}
+{% endblock topnav %}
+
+{% block nav %}
+{{ nav::sidebar_for_topnav(items=primary_nav, current_path=current_path | default(value=""), archive_pages=archive_pages) }}
+{% endblock nav %}
+
+{% block content %}
+{{ section.content | replace(from='<table>', to='<div class="table-wrap"><table>') | replace(from='</table>', to='</table></div>') | safe }}
+
+{% if section.title == "posts" and archive_pages | length > 0 %}
+{% set_global current_year = "" %}
+{% for page in archive_pages %}
+{% set page_year = page.date | date(format="%Y") %}
+{% if page_year != current_year %}
+{% if current_year != "" %}
+  </ul>
+</section>
+{% endif %}
+{% set_global current_year = page_year %}
+<section class="blog-year" id="year-{{ page_year }}">
+  <ul>
+{% endif %}
+    <li>
+      <time datetime="{{ page.date }}">{{ page.date }}</time>
+      <a href="{{ page.permalink }}">{{ page.title }}</a>
+      {% if page.summary %}
+      <div>{{ page.summary | safe }}</div>
+      <p>
+        <a href="{{ page.permalink }}">more</a>
+      </p>
+      {% endif %}
+    </li>
+{% endfor %}
+  </ul>
+</section>
+{% elif paginator is defined %}
+<ul>
+{% for page in paginator.pages %}
+<li>
+  {% if page.date %}
+  <time datetime="{{ page.date }}">{{ page.date }}</time>
+  {% endif %}
+  <a href="{{ page.permalink }}">{{ page.title }}</a>
+  {% if page.summary %}
+  <div>{{ page.summary | safe }}</div>
+  <p>
+    <a href="{{ page.permalink }}">more</a>
+  </p>
+  {% endif %}
+</li>
+{% endfor %}
+</ul>
+{% if paginator.previous or paginator.next %}
+<p>
+  {% if paginator.previous %}
+  <a href="{{ paginator.previous }}">previous</a>
+  {% endif %}
+  {% if paginator.previous and paginator.next %}
+  <span> | </span>
+  {% endif %}
+  {% if paginator.next %}
+  <a href="{{ paginator.next }}">next</a>
+  {% endif %}
+</p>
+{% endif %}
+{% elif section.pages %}
+<ul>
+{% for page in section.pages %}
+<li>
+  {% if page.date %}
+  <time datetime="{{ page.date }}">{{ page.date }}</time>
+  {% endif %}
+  <a href="{{ page.permalink }}">{{ page.title }}</a>
+  {% if page.summary %}
+  <div>{{ page.summary | safe }}</div>
+  <p>
+    <a href="{{ page.permalink }}">more</a>
+  </p>
+  {% endif %}
+</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endblock content %}

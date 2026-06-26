@@ -1,0 +1,134 @@
+# Site identity.
+#
+# base_url is the canonical URL. Use the real one.
+#
+# title is the site name Zola sees.
+#
+# description becomes the meta description and the header subtitle.
+base_url = "https://example.org"
+title = "Example Site"
+description = "Plain theme for text-first sites"
+
+
+# Build behavior.
+#
+# The theme ships plain CSS, so Sass stays off.
+#
+# There is no client-side search here, so the search index stays off.
+#
+# Sitemap, robots.txt, and Atom feeds stay on because they are cheap
+# and worth keeping.
+compile_sass = false
+build_search_index = false
+generate_sitemap = true
+generate_robots_txt = true
+generate_feeds = true
+feed_filenames = ["atom.xml"]
+
+
+# Taxonomies.
+#
+# taxonomy_root puts taxonomy pages under /notes/ in this example.
+#
+# tags gives the site one simple classification axis.
+taxonomy_root = "notes"
+
+taxonomies = [
+  { name = "tags", feed = true, paginate_by = 10 },
+]
+
+
+# Slugs and anchors.
+#
+# Keep paths, terms, and anchors clean.
+[slugify]
+paths = "on"
+taxonomies = "on"
+anchors = "on"
+
+
+# Theme options.
+#
+# Everything below lives under extra because it belongs to the theme,
+# not Zola itself.
+[extra]
+
+
+# Brand.
+#
+# brand_name is the visible site name.
+#
+# brand_href is the link behind the brand.
+#
+# brand_logo_src is optional. Leave it empty to hide the logo.
+#
+# brand_logo_alt is the alt text when the logo is shown.
+brand_name = "example.org"
+brand_href = "/"
+brand_logo_src = "/logo.svg"
+brand_logo_alt = "Example logo"
+
+
+# Utility navigation.
+#
+# utility_nav sits on the right side of the site nav.
+#
+# Use it for source, feeds, downloads, contact, licenses, and other
+# side links.
+utility_nav = [
+  { text = "source", href = "https://example.org/source" },
+]
+
+
+# Primary navigation.
+#
+# primary_nav is the main site navigation.
+#
+# Each item needs text and href. Items may define secondary_nav for the
+# sidebar and mobile section strip.
+primary_nav = [
+  {
+    text = "home",
+    href = "/",
+    secondary_nav = [
+      { text = "about", href = "/about/" },
+      { text = "contact", href = "/contact/" },
+      { text = "pgp", href = "/pgp/" },
+      { text = "now", href = "/now/" },
+    ],
+  },
+  {
+    text = "posts",
+    href = "/posts/",
+  },
+  {
+    text = "notes",
+    href = "/notes/",
+    secondary_nav = [
+      { text = "unix", href = "/notes/unix/" },
+      { text = "web", href = "/notes/web/" },
+      { text = "net", href = "/notes/net/" },
+      { text = "zola", href = "/notes/zola/" },
+      { text = "tags", href = "/notes/tags/" },
+    ],
+  },
+  {
+    text = "projects",
+    href = "/projects/",
+    secondary_nav = [
+      { text = "theme", href = "/projects/theme/" },
+      { text = "tools", href = "/projects/tools/" },
+    ],
+  },
+  { text = "links", href = "/links/" },
+  {
+    text = "about",
+    href = "/about/",
+    secondary_nav = [
+      { text = "contact", href = "/contact/" },
+      { text = "pgp", href = "/pgp/" },
+      { text = "now", href = "/now/" },
+    ],
+  },
+  { text = "rss", href = "/atom.xml" },
+]

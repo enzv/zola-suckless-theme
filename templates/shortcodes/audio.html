@@ -1,0 +1,9 @@
+<figure>
+  <audio controls preload="metadata">
+    <source src="{{ src }}"{% if mime %} type="{{ mime }}"{% endif %}>
+    <a href="{{ src }}">{{ fallback | default(value=src) }}</a>
+  </audio>
+  {% if caption %}
+  <figcaption>{{ caption | markdown(inline=true) | safe }}</figcaption>
+  {% endif %}
+</figure>

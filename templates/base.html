@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="{{ lang | default(value='en') }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  {% set brand_name = config.extra.brand_name | default(value="") %}
+  <title>{% block title %}{{ brand_name }}{% endblock title %}</title>
+  <meta name="description" content="{{ config.description }}">
+  <link rel="stylesheet" href="/colors.css">
+  <link rel="stylesheet" href="/style.css">
+  {% if config.generate_feeds %}
+  <link rel="alternate" type="application/atom+xml" title="{{ brand_name }}" href="/atom.xml">
+  {% endif %}
+  {% block extra_head %}{% endblock extra_head %}
+</head>
+<body>
+  {% set brand_href = config.extra.brand_href | default(value="/") %}
+  {% set brand_logo_src = config.extra.brand_logo_src | default(value="") %}
+  {% set brand_logo_alt = config.extra.brand_logo_alt | default(value="") %}
+  {% set primary_nav = config.extra.primary_nav | default(value=[]) %}
+  {% set utility_nav = config.extra.utility_nav | default(value=[]) %}
+  {% if brand_logo_src != "" %}
+    {% if brand_logo_src is starting_with("/") or brand_logo_src is starting_with("http") %}
+      {% set logo_src = brand_logo_src %}
+    {% else %}
+      {% set logo_src = "/" ~ brand_logo_src %}
+    {% endif %}
+  {% endif %}
+  <header id="header">
+    {% if brand_logo_src != "" %}
+    <a id="logo" href="{{ brand_href }}">
+      <img class="site-logo" src="{{ logo_src }}"{% if brand_logo_alt != "" %} alt="{{ brand_logo_alt }}"{% else %} alt=""{% endif %}>
+    </a>&nbsp;
+    {% endif %}
+    <a id="headerLink" href="{{ brand_href }}">{{ brand_name }}</a>
+    <span class="hidden"> - </span>
+    <span id="headerSubtitle">{{ config.description }}</span>
+  </header>
+  <hr class="hidden">
+
+  <nav id="menu" aria-label="site">
+    {% block topnav %}
+    <span class="left">
+      {% for item in primary_nav %}
+      <a href="{{ item.href }}">{{ item.text }}</a>
+      {% endfor %}
+    </span>
+    {% if utility_nav | length > 0 %}
+    <span class="right">
+      {% for item in utility_nav %}
+      <a href="{{ item.href }}">{{ item.text }}</a>
+      {% endfor %}
+    </span>
+    {% endif %}
+    {% endblock topnav %}
+  </nav>
+  <hr class="hidden">
+
+  <div id="content">
+    <nav id="nav" aria-label="section">{%- block nav -%}{%- endblock nav -%}</nav>
+    <hr class="hidden">
+
+    <main id="main">
+      {% block content %}{% endblock content %}
+    </main>
+  </div>
+  {% if utility_nav | length > 0 %}
+  <footer id="mobile-utility-footer">
+    <nav aria-label="site utilities">
+      {% for item in utility_nav %}
+      <a href="{{ item.href }}">{{ item.text }}</a>
+      {% endfor %}
+    </nav>
+  </footer>
+  {% endif %}
+</body>
+</html>

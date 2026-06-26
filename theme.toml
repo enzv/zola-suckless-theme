@@ -1,0 +1,9 @@
+name = "Suckless"
+description = "A minimal Zola theme with fixed structure, configurable navigation, and a focus on content over decoration."
+license = "MIT"
+homepage = "https://github.com/enzv/zola-suckless-theme"
+min_version = "0.22.0"
+tags = ["blog", "minimal", "theme", "plain"]
+[author]
+name = "Enzo Venturi"
+homepage = "https://enzoventuri.com"

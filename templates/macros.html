@@ -1,0 +1,95 @@
+{% macro top_link(item, current_path) %}
+{% set item_href = item.href %}
+{% set item_text = item.text %}
+{% if item_href == "/" %}
+{% set is_active = current_path == "/" %}
+{% else %}
+{% set is_active = current_path is starting_with(item_href) %}
+{% endif %}
+<a href="{{ item_href }}">
+  {% if is_active %}<b>{{ item_text }}</b>{% else %}{{ item_text }}{% endif %}
+</a>
+{% endmacro top_link %}
+
+{% macro year_nav(pages) %}
+{% if pages | length > 0 %}
+{% set_global current_year = "" %}
+<ul>
+  {% for page in pages %}
+  {% set page_year = page.date | date(format="%Y") %}
+  {% if page_year != current_year %}
+  {% set_global current_year = page_year %}
+  <li>
+    <a href="/posts/#year-{{ page_year }}">{{ page_year }}/</a>
+  </li>
+  {% endif %}
+  {% endfor %}
+</ul>
+{% endif %}
+{% endmacro year_nav %}
+
+{% macro tree_node(node, current_path, depth=0) %}
+{% if node.text is defined %}
+{% set node_text = node.text %}
+{% set node_href = node.href %}
+{% set node_children = node.children | default(value=[]) %}
+{% else %}
+{% set node_text = node.title %}
+{% set node_href = node.permalink %}
+{% set node_children = node.subsections | default(value=[]) %}
+{% endif %}
+{% set is_current = current_path == node_href %}
+{% set display_text = node_text ~ "/" %}
+<li>
+  <a class="nav-depth-{{ depth }}" href="{{ node_href }}">
+    {% if is_current %}<b>{{ display_text }}</b>{% else %}{{ display_text }}{% endif %}
+  </a>
+  {% if node_children | length > 0 %}
+    <ul>
+      {% for child in node_children %}
+      {{ self::tree_node(node=child, current_path=current_path, depth=depth + 1) }}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</li>
+{% endmacro tree_node %}
+
+{% macro toc_outline(items) %}
+{% if items | length > 0 %}
+<ul>
+  {% for item in items %}
+  {% if item.level == 1 %}
+  <li>
+    <a href="{{ item.permalink }}">{{ item.title }}</a>
+  </li>
+  {% endif %}
+  {% endfor %}
+</ul>
+{% endif %}
+{% endmacro toc_outline %}
+
+{% macro sidebar_for_topnav(items, current_path, archive_pages) %}
+{% for item in items | default(value=[]) %}
+{% set item_href = item.href %}
+{% set secondary_nav = item.secondary_nav | default(value=[]) %}
+{% if item_href == "/" %}
+{% set is_active = current_path == "/" %}
+{% else %}
+{% set is_active = current_path is starting_with(item_href) %}
+{% endif %}
+{% if is_active %}
+{% if secondary_nav | length > 0 %}
+<ul>
+  {% for node in secondary_nav %}
+  {{ self::tree_node(node=node, current_path=current_path, depth=0) }}
+  {% endfor %}
+</ul>
+{% if item_href == "/posts/" and archive_pages | length > 0 %}
+{{ self::year_nav(pages=archive_pages) }}
+{% endif %}
+{% elif item_href == "/posts/" and archive_pages | length > 0 %}
+{{ self::year_nav(pages=archive_pages) }}
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endmacro sidebar_for_topnav %}

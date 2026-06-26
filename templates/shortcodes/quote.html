@@ -1,0 +1,7 @@
+{% set quote_author = author | default(value=cite | default(value="")) %}
+<blockquote class="quote"{% if source %} cite="{{ source }}"{% endif %}>
+  <p>"{{ text | markdown(inline=true) | safe }}"</p>
+  {% if quote_author %}
+  <footer>{{ quote_author | markdown(inline=true) | safe }}</footer>
+  {% endif %}
+</blockquote>

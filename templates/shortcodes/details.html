@@ -1,0 +1,4 @@
+<details{% if open %} open{% endif %}>
+  <summary>{{ summary | markdown(inline=true) | safe }}</summary>
+  <p>{{ text | markdown(inline=true) | safe }}</p>
+</details>

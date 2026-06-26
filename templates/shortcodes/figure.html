@@ -1,0 +1,11 @@
+<figure>
+  <img
+    src="{{ src }}"
+    alt="{{ alt | default(value='') }}"
+    {% if title %}title="{{ title }}"{% endif %}
+    {% if loading %}loading="{{ loading }}"{% endif %}
+  >
+  {% if caption %}
+  <figcaption>{{ caption | markdown(inline=true) | safe }}</figcaption>
+  {% endif %}
+</figure>

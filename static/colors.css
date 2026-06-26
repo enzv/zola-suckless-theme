@@ -1,0 +1,24 @@
+:root {
+  --theme-color-background: #fff;
+  --theme-color-dark-background: #000;
+  --theme-color-dark-code-background: #111;
+  --theme-color-dark-code-border: #222;
+  --theme-color-dark-foreground: #bdbdbd;
+  --theme-color-dark-header-background: #111;
+  --theme-color-dark-link: #56c8ff;
+  --theme-color-dark-menu-border-top: #222;
+  --theme-color-dark-nav-hover-background: #222;
+  --theme-color-foreground: #000;
+  --theme-color-header-background: #eee;
+  --theme-color-header-foreground: #555;
+  --theme-color-header-link: #17a;
+  --theme-color-link: #005386;
+  --theme-color-link-hover-background: #ddd;
+  --theme-color-menu-background: #17a;
+  --theme-color-menu-border-bottom: #069;
+  --theme-color-menu-border-top: #ccc;
+  --theme-color-menu-foreground: #fff;
+  --theme-color-menu-hover-background: #069;
+  --theme-color-nav-border: #ccc;
+  --theme-color-nav-hover-background: #ddd;
+}

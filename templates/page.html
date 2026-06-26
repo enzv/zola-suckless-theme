@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% import "macros.html" as nav %}
+
+{% block title %}{{ page.title }}{% endblock title %}
+
+{% block topnav %}
+{% set primary_nav = config.extra.primary_nav | default(value=[]) %}
+{% set utility_nav = config.extra.utility_nav | default(value=[]) %}
+{% set archive_pages = [] %}
+<span class="left">
+  {% for item in primary_nav %}
+  {{ nav::top_link(item=item, current_path=current_path | default(value="")) }}
+  {% endfor %}
+</span>
+{% if utility_nav | length > 0 %}
+<span class="right">
+  {% for item in utility_nav %}
+  <a href="{{ item.href }}">{{ item.text }}</a>
+  {% endfor %}
+</span>
+{% endif %}
+{% endblock topnav %}
+
+{% block nav %}
+{{ nav::sidebar_for_topnav(items=primary_nav, current_path=current_path | default(value=""), archive_pages=archive_pages) }}
+{% endblock nav %}
+
+{% block content %}
+<h1>{{ page.title }}</h1>
+
+{% if page.date or page.taxonomies.tags %}
+<p>
+  {% if page.date %}
+  <time datetime="{{ page.date }}">{{ page.date }}</time>
+  {% endif %}
+
+  {% if page.taxonomies.tags %}
+  {% for tag in page.taxonomies.tags %}
+  <a href="{{ get_taxonomy_url(kind='tags', name=tag) }}">#{{ tag }}</a>
+  {% endfor %}
+  {% endif %}
+</p>
+{% endif %}
+
+{{ page.content | replace(from='<table>', to='<div class="table-wrap"><table>') | replace(from='</table>', to='</table></div>') | safe }}
+{% endblock content %}
